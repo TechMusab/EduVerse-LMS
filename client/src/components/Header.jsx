@@ -8,7 +8,6 @@ export default function Header() {
   return (
     <>
       <nav className="p-3 bg-background flex justify-between items-center shadow-md">
-        {/* Logo */}
         <a
           href="#"
           className="text-primary-500 font-display text-xl font-semibold md:2xl"
@@ -16,7 +15,6 @@ export default function Header() {
           EduVerse
         </a>
 
-        {/* Desktop Nav */}
         <div className="hidden md:flex gap-4">
           <a className="text-text hover:text-primary-500 transition" href="#">
             Home
@@ -29,7 +27,6 @@ export default function Header() {
           </a>
         </div>
 
-        {/* Desktop Buttons */}
         <div className="hidden md:flex gap-4">
           <a
             className="text-secondary-text px-4 py-2 rounded-lg bg-secondary-500 hover:bg-secondary-hover"
