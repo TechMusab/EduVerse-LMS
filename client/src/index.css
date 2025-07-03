@@ -36,4 +36,13 @@
   --color-button-danger: #ef4444;
   --color-button-danger-hover: #dc2626;
   --color-button-danger-text: #ffffff;
+  --animate-marquee: marquee 25s linear infinite;
+  @keyframes marquee {
+    0% {
+      transform: translateX(100%);
+    }
+    100% {
+      transform: translateX(-100%);
+    }
+  }
 }
