@@ -69,7 +69,6 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom */}
       <div className="border-t border-muted text-center py-6 text-sm text-muted">
         &copy; {new Date().getFullYear()} EduVerse. All rights reserved.
       </div>
