@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import hamburger from "../assets/hamburger.svg";
+import { useNavigate } from "react-router-dom";
 
 
 export default function Header() {
   const [isOpen, setIsOpen] = useState(false);
+  const navigate = useNavigate();
 
   return (
     <>
@@ -36,7 +38,7 @@ export default function Header() {
           </a>
           <a
             className="text-primary-text px-4 py-2 rounded-lg bg-primary-500 hover:bg-primary-hover"
-            href="#"
+            onClick={()=>navigate('/sign-up')}
           >
             Sign Up
           </a>
@@ -78,7 +80,7 @@ export default function Header() {
             </a>
             <a
               className="text-primary-text text-center px-6 py-3 rounded-lg bg-primary-500 hover:bg-primary-hover"
-              href="#"
+              onClick={()=>navigate('/sign-up')}
             >
               Sign Up
             </a>

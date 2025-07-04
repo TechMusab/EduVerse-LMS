@@ -5,9 +5,7 @@ import Features from '../components/Features'
 import PopularCourses from '../components/popularCourses'
 import Reviews from '../components/Reviews'
 import CTA from '../components/CTA'
-import Footer from '../components/footer'
-
-
+import Footer from '../components/Footer'
 export default function LandingPage() {
     
 
