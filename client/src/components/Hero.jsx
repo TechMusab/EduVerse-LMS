@@ -1,9 +1,11 @@
 import React from "react";
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import background from "../assets/hero-background.mp4";
 
 export default function Hero() {
     const [animateText, setAnimateText] = useState(false);
+    const navigate = useNavigate();
     useEffect(() => {
         setTimeout(() => setAnimateText(true), 300); 
       }, []);
@@ -35,9 +37,9 @@ export default function Hero() {
         </p>
         <div className="mt-8 flex gap-4">
           <a
-            href="#"
+            onClick={()=>navigate('sign-up')}
             className="bg-primary-500 hover:bg-primary-hover text-primary-text 
-            rounded-lg flex items-center justify-center px-4 py-2 font-medium transition md:px-6 md:py-3 "
+            rounded-lg flex items-center justify-center px-4 py-2 font-medium cursor-pointer transition md:px-6 md:py-3 "
           >
             Get Started
           </a>

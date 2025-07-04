@@ -31,13 +31,13 @@ export default function Header() {
 
         <div className="hidden md:flex gap-4">
           <a
-            className="text-secondary-text px-4 py-2 rounded-lg bg-secondary-500 hover:bg-secondary-hover"
-            href="#"
+            className="text-secondary-text px-4 py-2 rounded-lg cursor-pointer bg-secondary-500 hover:bg-secondary-hover"
+            onClick={()=>navigate('/login')}
           >
             Login
           </a>
           <a
-            className="text-primary-text px-4 py-2 rounded-lg bg-primary-500 hover:bg-primary-hover"
+            className="text-primary-text px-4 py-2 rounded-lg cursor-pointer bg-primary-500 hover:bg-primary-hover"
             onClick={()=>navigate('/sign-up')}
           >
             Sign Up
@@ -73,13 +73,13 @@ export default function Header() {
 
           <div className="flex flex-col gap-4 mt-6 w-full">
             <a
-              className="text-secondary-text text-center px-6 py-3 rounded-lg bg-secondary-500 hover:bg-secondary-hover"
-              href="#"
+              className="text-secondary-text text-center px-6 py-3 rounded-lg bg-secondary-500 cursor-pointer hover:bg-secondary-hover"
+              onClick={()=>navigate('/login')}
             >
               Login
             </a>
             <a
-              className="text-primary-text text-center px-6 py-3 rounded-lg bg-primary-500 hover:bg-primary-hover"
+              className="text-primary-text text-center px-6 py-3 rounded-lg bg-primary-500 cursor-pointer hover:bg-primary-hover"
               onClick={()=>navigate('/sign-up')}
             >
               Sign Up
