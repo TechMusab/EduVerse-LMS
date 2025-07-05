@@ -1,11 +1,45 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import background from "../assets/hero-background.mp4";
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Toast from "../components/Toast";
 
 export default function Signup() {
   const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const [toast, setToast] = useState(null);
+  const onSubmit = async (data) => {
+    console.log(data);
+    const res = await fetch("http://localhost:5000/api/auth/register", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    if (res.status === 201) {
+      setToast({ message: result.message, type: "success" });
+    } else {
+      setToast({ message: result.message, type: "error" });
+    }
+    setTimeout(() => {
+      setToast(null);
+      if (res.status === 201) {
+        navigate("/login");
+      }
+    }, 3000);
+  };
   return (
     <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <section className="w-screen h-screen bg-surface flex gap-6">
         <div className="md:h-full md:w-1/2">
           <video
@@ -33,12 +67,13 @@ export default function Signup() {
           <p className="text-muted flex justify-center  ">
             Sign up and start your journey
           </p>
-          <form className="mt-14 " action="">
+          <form className="mt-14 " onSubmit={handleSubmit(onSubmit)}>
             <div className="relative w-[90%] my-4">
               <input
                 type="text"
                 id="email"
                 placeholder=" "
+                {...register("email")}
                 className="peer h-12 w-full rounded-3xl border border-gray-300 bg-gray-100 px-4 pt-4 pb-1 text-sm text-black outline-none focus:border-blue-500"
               />
               <label
@@ -53,6 +88,7 @@ export default function Signup() {
                 type="text"
                 id="username"
                 placeholder=" "
+                {...register("username")}
                 className="peer h-12 w-full rounded-3xl border border-gray-300 bg-gray-100 px-4 pt-4 pb-1 text-sm text-black outline-none focus:border-blue-500"
               />
               <label
@@ -68,6 +104,7 @@ export default function Signup() {
                 type="password"
                 id="password"
                 placeholder=" "
+                {...register("password")}
                 className="peer h-12 w-full rounded-3xl border border-gray-300 bg-gray-100 px-4 pt-4 pb-1 text-sm text-black outline-none focus:border-blue-500"
               />
               <label
@@ -78,11 +115,14 @@ export default function Signup() {
               </label>
             </div>
 
-            <button className="w-[90%] py-2 cursor-pointer  bg-primary-500 rounded-4xl text-primary-text text-lg mt-6 hover:bg-primary-600">
+            <button
+              type="submit"
+              className="w-[90%] py-2 cursor-pointer  bg-primary-500 rounded-4xl text-primary-text text-lg mt-6 hover:bg-primary-600"
+            >
               Sign up
             </button>
           </form>
-          <p className="text-muted mt-24 flex justify-center">
+          <p className="text-muted mt-12 mr-10 flex justify-center">
             Already have an account?{" "}
             <a
               onClick={() => navigate("/login")}

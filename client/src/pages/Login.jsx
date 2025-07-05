@@ -1,11 +1,42 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import background from "../assets/hero-background.mp4";
-
-export default function Signup() {
-    const navigate = useNavigate();
+import { useForm } from "react-hook-form";
+import { useState } from "react";
+import Toast from "../components/Toast";
+export default function Login() {
+  const navigate = useNavigate();
+  const { register, handleSubmit } = useForm();
+  const [toast, setToast] = useState(null);
+  const onSubmit = async (data) => {
+    const res = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+    const result = await res.json();
+    console.log(result);
+    if (res.status === 200) {
+      setToast({ message: result.message, type: "success" });
+      localStorage.setItem("token", result.token);
+    } else {
+      setToast({ message: result.message, type: "error" });
+    }
+    setTimeout(() => {
+      setToast(null);
+    }, 3000);
+  };
   return (
     <>
+      {toast && (
+        <Toast
+          message={toast.message}
+          type={toast.type}
+          onClose={() => setToast(null)}
+        />
+      )}
       <section className="w-screen h-screen bg-surface flex gap-6">
         <div className="md:h-full md:w-1/2">
           <video
@@ -33,12 +64,13 @@ export default function Signup() {
           <p className="text-muted flex justify-center  ">
             Login to your account to continue
           </p>
-          <form className="mt-14 " action="">
+          <form className="mt-14 " onSubmit={handleSubmit(onSubmit)}>
             <div className="relative w-[90%] my-4 ">
               <input
                 type="text"
                 id="username"
                 placeholder=" "
+                {...register("username")}
                 className="peer h-12 w-full rounded-3xl border border-gray-300 bg-gray-100 px-4 pt-4 pb-1 text-sm text-black outline-none focus:border-blue-500"
               />
               <label
@@ -54,6 +86,7 @@ export default function Signup() {
                 type="password"
                 id="password"
                 placeholder=" "
+                {...register("password")}
                 className="peer h-12 w-full rounded-3xl border border-gray-300 bg-gray-100 px-4 pt-4 pb-1 text-sm text-black outline-none focus:border-blue-500"
               />
               <label
@@ -68,9 +101,12 @@ export default function Signup() {
               Login
             </button>
           </form>
-          <p className="text-muted mt-24 flex justify-center">
+          <p className="text-muted mr-10 mt-12 flex justify-center">
             Don't have an account?{" "}
-            <a onClick={()=>navigate('/sign-up')} className="text-primary-500 font-semibold cursor-pointer">
+            <a
+              onClick={() => navigate("/sign-up")}
+              className="text-primary-500 font-semibold cursor-pointer"
+            >
               Sign up
             </a>
           </p>
