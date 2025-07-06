@@ -8,7 +8,7 @@ import review from "../../assets/review (1).jpg";
 import hamburger from "../../assets/hamburger.svg";
 
 export default function Topbar() {
-    const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
   return (
     <>
       <header className="bg-surface p-6 shadow-xl flex justify-between items-center">
@@ -18,7 +18,9 @@ export default function Topbar() {
         >
           EduVerse
         </a>
-        <h3 className="hidden text-text font-bold text-display text-xl lg:block lg:text-2xl">Dashboard</h3>
+        <h3 className="hidden text-text font-bold text-display text-xl lg:block lg:text-2xl">
+          Dashboard
+        </h3>
         <div className="relative w-full max-w-sm">
           <CiSearch
             size={18}
@@ -30,30 +32,26 @@ export default function Topbar() {
             className="w-[90%] m-4 lg:w-full lg:m-0 py-2 pl-10 pr-4 rounded-2xl border border-gray-300 bg-gray-100 text-sm text-text focus:outline-none focus:border-primary-500"
           />
         </div>
-        <div className="hidden md:flex justify-center items-center gap-6">
+        <div className="hidden lg:flex justify-center items-center gap-6">
           <MdMessage className="cursor-pointer" size={24} />
           <IoIosNotifications className="cursor-pointer" size={24} />
           <div className="flex justify-center items-center gap-4">
             <img
               className="w-8 h-8 rounded-full object-cover cursor-pointer"
               src={review}
-              alt="profile pix"
+              alt="profile pic"
             />
-            <p className="text-muted text-semibold">John Doe</p>
+            <p className="text-text text-semibold">John Doe</p>
             <MdKeyboardArrowDown className="cursor-pointer" size={24} />
           </div>
         </div>
-        <button onClick={() => setIsOpen(true)} className="md:hidden">
+        <button onClick={() => setIsOpen(true)} className="lg:hidden">
           <img src={hamburger} alt="Menu" className="w-8 h-8" />
         </button>
       </header>
       {isOpen && (
         <div className="fixed top-0 left-0 w-full h-full bg-background z-50 flex flex-col justify-start items-start px-6 py-6 space-y-6">
-       
-          <button
-            onClick={() => setIsOpen(false)}
-            className="self-end mb-4"
-          >
+          <button onClick={() => setIsOpen(false)} className="self-end mb-4">
             <span className="text-3xl text-text">×</span>
           </button>
 
@@ -68,27 +66,19 @@ export default function Topbar() {
             About
           </a>
           <a className="text-text text-lg hover:text-primary-500" href="#">
-            Notfications 
+            Notfications
           </a>
           <a className="text-text text-lg hover:text-primary-500" href="#">
             Messages
           </a>
 
           <div className="flex flex-col gap-4 mt-6 w-full">
-          <a
-              className="text-secondary-text text-center px-6 py-3 rounded-lg bg-primary-500 cursor-pointer hover:bg-primary-600"
-              
-            >
+            <a className="text-secondary-text text-center px-6 py-3 rounded-lg bg-primary-500 cursor-pointer hover:bg-primary-600">
               Profile
             </a>
-            <a
-              className="text-secondary-text text-center px-6 py-3 rounded-lg bg-secondary-500 cursor-pointer hover:bg-secondary-hover"
-              
-            >
+            <a className="text-secondary-text text-center px-6 py-3 rounded-lg bg-secondary-500 cursor-pointer hover:bg-secondary-hover">
               Logout
             </a>
-            
-           
           </div>
         </div>
       )}
