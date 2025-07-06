@@ -21,6 +21,7 @@ export default function Login() {
     if (res.status === 200) {
       setToast({ message: result.message, type: "success" });
       localStorage.setItem("token", result.token);
+      navigate("/dashboard");
     } else {
       setToast({ message: result.message, type: "error" });
     }
