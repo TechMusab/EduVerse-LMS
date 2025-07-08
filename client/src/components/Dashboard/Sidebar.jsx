@@ -8,7 +8,7 @@ import { MdQuestionAnswer } from "react-icons/md";
 export default function Sidebar() {
   return (
     <>
-    <section className="hidden lg:flex flex-col justify-between h-[84vh] p-6 bg-surface  shadow-xl w-[20%] my-2 mr-4 rounded-sm">
+    <section className="hidden lg:flex flex-col justify-between h-[87vh] p-6 bg-surface  shadow-xl w-[20%] my-2 mr-4 rounded-sm">
       <div className="flex flex-col gap-6">
         <div className="flex items-center gap-4">
           <AiFillDashboard />

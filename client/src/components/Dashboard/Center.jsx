@@ -64,7 +64,38 @@ export default function Center() {
             </div>
           </div>
         </div>
-        <div></div>
+        <div className="bg-gray-100 mt-2 p-4">
+          <div className="p-4 flex justify-between">
+            <h3 className="font-bold md:text-2xl">My Courses</h3>
+            <div className="flex gap-4">
+            <p className="font-semibold">Active</p>
+            <p className="font-semibold">Completed</p>
+
+            </div>
+          </div>
+          <div className="flex justify-between p-4 text-gray-500">
+          <p>Course Name</p>
+          <p>Completed</p>
+          <p>Status</p>
+          </div>
+         <ul className="font-semibold">
+            <li className="flex justify-between p-4 border-b border-gray-200">
+              <p>Web Development</p>
+              <p>60%</p>
+              <p className="text-green-500">In Progress</p>
+            </li>
+            <li className="flex justify-between p-4 border-b border-gray-200">
+              <p>Data Science</p>
+              <p>100%</p>
+              <p className="text-gray-500">Completed</p>
+            </li>
+            <li className="flex justify-between p-4 border-b border-gray-200">
+              <p>Machine Learning</p>
+              <p>80%</p>
+              <p className="text-green-500">In Progress</p>
+            </li>
+         </ul>
+        </div>
       </section>
     </>
   );
