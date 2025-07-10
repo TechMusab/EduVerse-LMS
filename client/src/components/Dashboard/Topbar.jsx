@@ -6,9 +6,53 @@ import { IoIosNotifications } from "react-icons/io";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import review from "../../assets/review (1).jpg";
 import hamburger from "../../assets/hamburger.svg";
-
+import Toast from "../Toast";
 export default function Topbar() {
   const [isOpen, setIsOpen] = useState(false);
+  const [showModal, setShowModal] = useState(false);
+  const [toast, setToast] = useState(null);
+  const [formData, setFormData] = useState({
+    bio: "",
+    expertise: "",
+    linkedin: "",
+  });
+  const handleinstructorform = () => {
+    setShowModal(true);
+  };
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const token = localStorage.getItem("token");
+
+      const response = await fetch(
+        "http://localhost:5000/api/users/become-instructor",
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: token,
+          },
+          body: JSON.stringify(formData),
+        }
+      );
+        const data = await response.json();
+        //toast
+        setToast({ message: data.message, type: "success" });
+        setTimeout(() => {
+          setToast(null);
+          closeModal();
+        }, 3000);
+    } catch (error) {
+      console.error("Network error:", error);
+    }
+  };
   return (
     <>
       <header className="bg-surface p-6 shadow-xl flex justify-between items-center">
@@ -32,6 +76,13 @@ export default function Topbar() {
             className="w-[90%] m-4 lg:w-full lg:m-0 py-2 pl-10 pr-4 rounded-2xl border border-gray-300 bg-gray-100 text-sm text-text focus:outline-none focus:border-primary-500"
           />
         </div>
+
+        <button
+          onClick={handleinstructorform}
+          className="hidden  lg:block bg-primary-500 px-4 py-2 rounded-lg text-primary-text cursor-pointer hover:bg-primary-600"
+        >
+          Become Instructor
+        </button>
         <div className="hidden lg:flex justify-center items-center gap-6">
           <MdMessage className="cursor-pointer" size={24} />
           <IoIosNotifications className="cursor-pointer" size={24} />
@@ -76,9 +127,72 @@ export default function Topbar() {
             <a className="text-secondary-text text-center px-6 py-3 rounded-lg bg-primary-500 cursor-pointer hover:bg-primary-600">
               Profile
             </a>
+            <button
+              onClick={handleinstructorform}
+              className=" bg-primary-500 px-4 py-2 rounded-lg text-primary-text cursor-pointer hover:bg-primary-600"
+            >
+              Become Instructor
+            </button>
             <a className="text-secondary-text text-center px-6 py-3 rounded-lg bg-secondary-500 cursor-pointer hover:bg-secondary-hover">
               Logout
             </a>
+          </div>
+        </div>
+      )}
+
+      {showModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50">
+          <div
+            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            onClick={closeModal}
+          ></div>
+
+          <div className="bg-white p-6 rounded-lg shadow-lg z-50 w-full max-w-md relative">
+            <h2 className="text-xl font-bold mb-4">Become an Instructor</h2>
+            <form onSubmit={handleSubmit}>
+              <input
+                type="text"
+                name="bio"
+                placeholder="Your Bio"
+                value={formData.bio}
+                onChange={handleChange}
+                className="block w-full mb-2 border p-2 rounded"
+                required
+              />
+              <input
+                type="text"
+                name="expertise"
+                placeholder="Your Expertise"
+                value={formData.expertise}
+                onChange={handleChange}
+                className="block w-full mb-2 border p-2 rounded"
+                required
+              />
+              <input
+                type="url"
+                name="linkedin"
+                placeholder="LinkedIn Profile (optional)"
+                value={formData.linkedin}
+                onChange={handleChange}
+                className="block w-full mb-4 border p-2 rounded"
+              />
+              {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
+              <div className="flex justify-end gap-2">
+                <button
+                  type="button"
+                  onClick={closeModal}
+                  className="bg-gray-300 px-4 py-2 rounded"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="bg-green-600 text-white px-4 py-2 rounded"
+                >
+                  Submit
+                </button>
+              </div>
+            </form>
           </div>
         </div>
       )}

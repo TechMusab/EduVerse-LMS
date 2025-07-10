@@ -1,10 +1,10 @@
-import User from "../models/User";
+import User from "../models/User.js";
 
 export const becomeInstructor = async (req, res) => {
   try {
     const userId = req.user.id;
-    const { bio, expersite, linkedin } = req.body;
-    if (!bio || !expersite || !linkedin) {
+    const { bio, expertise, linkedin } = req.body;
+    if (!bio || !expertise) {
       return res.status(400).json({
         message: "Please provide all required fields.",
       });
@@ -15,7 +15,7 @@ export const becomeInstructor = async (req, res) => {
         role: "instructor",
         instructorProfile: {
           bio,
-          expersite,
+          expertise,
           linkedin,
         },
       },
@@ -33,7 +33,6 @@ export const becomeInstructor = async (req, res) => {
       user: updatedUser,
     });
   } catch (error) {
-    console.error(error);
     res.status(500).json({
       message: "Server error. Please try again later.",
     });
