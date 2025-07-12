@@ -4,6 +4,8 @@ import { Pagination, Autoplay } from "swiper/modules";
 import review1 from "../assets/review (1).jpg";
 import review2 from "../assets/review (2).jpg";
 import review3 from "../assets/review (3).jpg";
+import { AnimatedSection, AnimatedCard, AnimatedImage } from "./shared/AnimatedComponents";
+import { ScrollAnimated, StaggeredList, StaggeredItem } from "./shared/ScrollAnimation";
 
 export default function Reviews() {
   const reviews = [
@@ -34,11 +36,17 @@ export default function Reviews() {
   ];
 
   return (
-    <>
-      <section className="bg-background w-full mt-10">
-        <h2 className="text-center text-3xl md:text-4xl font-bold text -text mb-6">
+    <AnimatedSection className="bg-background w-full mt-10 py-16">
+      <ScrollAnimated className="text-center mb-12">
+        <h2 className="text-3xl md:text-4xl font-bold text-text mb-4">
           What Our Students Say
         </h2>
+        <p className="text-xl text-muted max-w-2xl mx-auto">
+          Hear from our community of learners who have transformed their careers with EduVerse
+        </p>
+      </ScrollAnimated>
+      
+      <StaggeredList className="max-w-xl mx-auto sm:max-w-2xl md:max-w-3xl lg:max-w-4xl">
         <Swiper
           modules={[Pagination, Autoplay]}
           pagination={{ clickable: true }}
@@ -46,25 +54,30 @@ export default function Reviews() {
           loop={true}
           spaceBetween={20}
           slidesPerView={1}
-          className="max-w-xl mx-auto sm:max-w-2xl md:max-w-3xl lg:max-w-4xl"
+          className="reviews-swiper"
         >
-          {reviews.map((review, index) => {
-            return (
-              <SwiperSlide key={index}>
-                <div className="bg-surface p-4 md:p-6 rounded-xl shadow text-center">
-                  <img
-                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-46 md:h-46 my-4 rounded-full object-cover mx-auto"
+          {reviews.map((review, index) => (
+            <SwiperSlide key={index}>
+              <StaggeredItem>
+                <AnimatedCard className="bg-surface p-6 md:p-8 rounded-xl shadow-lg text-center hover:shadow-xl transition-shadow">
+                  <AnimatedImage
+                    className="w-32 h-32 sm:w-40 sm:h-40 md:w-48 md:h-48 my-6 rounded-full object-cover mx-auto border-4 border-primary-100"
                     src={review.image}
-                    alt=""
+                    alt={review.name}
                   />
-                  <h3 className="text-text text-semibold">{review.name}</h3>
-                  <p className="text-muted italic mb-4">"{review.review}"</p>
-                </div>
-              </SwiperSlide>
-            );
-          })}
+                  <h3 className="text-text text-xl font-semibold mb-3">{review.name}</h3>
+                  <p className="text-muted italic mb-4 text-lg leading-relaxed">"{review.review}"</p>
+                  <div className="flex justify-center gap-1">
+                    {[...Array(review.rating)].map((_, i) => (
+                      <span key={i} className="text-yellow-400 text-xl">★</span>
+                    ))}
+                  </div>
+                </AnimatedCard>
+              </StaggeredItem>
+            </SwiperSlide>
+          ))}
         </Swiper>
-      </section>
-    </>
+      </StaggeredList>
+    </AnimatedSection>
   );
 }

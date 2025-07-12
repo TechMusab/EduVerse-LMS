@@ -1,38 +1,136 @@
 import React from "react";
-import { useState } from "react";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
-import "../../css/custom-calender.css";
+import { MdTrendingUp, MdNotifications, MdCalendarToday } from "react-icons/md";
+import { FaTrophy, FaStar } from "react-icons/fa";
+
 export default function Right() {
-  const [date, setDate] = useState(new Date());
+  const achievements = [
+    { id: 1, title: "First Course", description: "Completed your first course", icon: "🏆", color: "gradient-success" },
+    { id: 2, title: "Perfect Score", description: "Got 100% on a quiz", icon: "⭐", color: "gradient-warning" },
+    { id: 3, title: "Streak Master", description: "7 days learning streak", icon: "🔥", color: "gradient-error" }
+  ];
+
+  const notifications = [
+    { id: 1, message: "New course available: Advanced React", time: "2 hours ago", type: "course" },
+    { id: 2, message: "Assignment due tomorrow", time: "5 hours ago", type: "assignment" },
+    { id: 3, message: "You earned a new badge!", time: "1 day ago", type: "achievement" }
+  ];
 
   return (
-    <>
-      <section className="flex flex-col gap-4 p-4">
-        <div className="p-4 bg-gray-100">
-          <h3 className="font-bold mb-4">Status</h3>
-          <div className="max-w-sm mx-auto bg-white rounded-xl shadow-md p-4">
-            <Calendar onChange={setDate} value={date} />
-          </div>
-        </div>
-        <div className="p-4 bg-gray-100">
-          <h3 className="font-bold mb-4">Upcoming</h3>
-          <div className="max-w-sm mx-auto rounded-xl shadow-md p-4 flex gap-4">
-            <p className="font-semibold">10 July</p>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm">Assignment 1</p>
-              <p className="text-sm">Assignments</p>
+    <div className="space-y-6">
+      {/* Learning Stats */}
+      <div className="bg-surface rounded-xl p-6 shadow-lg glass-effect animate-slide-up">
+        <h2 className="text-xl font-bold text-text mb-4">Learning Stats</h2>
+        <div className="space-y-4">
+          <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
+                <MdTrendingUp size={20} className="text-white" />
+              </div>
+              <div>
+                <p className="font-semibold text-text">Learning Streak</p>
+                <p className="text-sm text-text-light">Current streak</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-bold text-text">7</p>
+              <p className="text-xs text-text-light">days</p>
             </div>
           </div>
-          <div className="max-w-sm mx-auto rounded-xl shadow-md p-4 flex gap-4">
-            <p className="font-semibold">20 July</p>
-            <div className="flex flex-col gap-2">
-              <p className="text-sm">Assignment 2</p>
-              <p className="text-sm">Project Submission</p>
+          
+          <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg gradient-secondary flex items-center justify-center">
+                <FaTrophy size={20} className="text-white" />
+              </div>
+              <div>
+                <p className="font-semibold text-text">Total Points</p>
+                <p className="text-sm text-text-light">Earned this month</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-bold text-text">1,247</p>
+              <p className="text-xs text-text-light">points</p>
+            </div>
+          </div>
+          
+          <div className="flex items-center justify-between p-3 rounded-lg bg-gray-50">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg gradient-accent flex items-center justify-center">
+                <FaStar size={20} className="text-white" />
+              </div>
+              <div>
+                <p className="font-semibold text-text">Average Score</p>
+                <p className="text-sm text-text-light">Last 30 days</p>
+              </div>
+            </div>
+            <div className="text-right">
+              <p className="text-2xl font-bold text-text">87%</p>
+              <p className="text-xs text-text-light">excellent</p>
             </div>
           </div>
         </div>
-      </section>
-    </>
+      </div>
+
+      {/* Achievements */}
+      <div className="bg-surface rounded-xl p-6 shadow-lg glass-effect animate-slide-up">
+        <h2 className="text-xl font-bold text-text mb-4">Recent Achievements</h2>
+        <div className="space-y-3">
+          {achievements.map((achievement) => (
+            <div key={achievement.id} className="flex items-center gap-3 p-3 rounded-lg border border-gray-100 hover:shadow-sm transition-all duration-300">
+              <div className={`w-12 h-12 rounded-lg ${achievement.color} flex items-center justify-center text-2xl`}>
+                {achievement.icon}
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-text">{achievement.title}</p>
+                <p className="text-sm text-text-light">{achievement.description}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Notifications */}
+      <div className="bg-surface rounded-xl p-6 shadow-lg glass-effect animate-slide-up">
+        <h2 className="text-xl font-bold text-text mb-4">Recent Notifications</h2>
+        <div className="space-y-3">
+          {notifications.map((notification) => (
+            <div key={notification.id} className="p-3 rounded-lg border border-gray-100 hover:shadow-sm transition-all duration-300">
+              <p className="text-sm text-text font-medium">{notification.message}</p>
+              <p className="text-xs text-text-light mt-1">{notification.time}</p>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* Upcoming Events */}
+      <div className="bg-surface rounded-xl p-6 shadow-lg glass-effect animate-slide-up">
+        <h2 className="text-xl font-bold text-text mb-4">Upcoming Events</h2>
+        <div className="space-y-3">
+          <div className="p-3 rounded-lg border border-gray-100 hover:shadow-sm transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg gradient-primary flex items-center justify-center">
+                <MdCalendarToday size={20} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-text">Live Q&A Session</p>
+                <p className="text-sm text-text-light">Tomorrow at 2:00 PM</p>
+              </div>
+            </div>
+          </div>
+          
+          <div className="p-3 rounded-lg border border-gray-100 hover:shadow-sm transition-all duration-300">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-lg gradient-secondary flex items-center justify-center">
+                <MdNotifications size={20} className="text-white" />
+              </div>
+              <div className="flex-1">
+                <p className="font-semibold text-text">Course Deadline</p>
+                <p className="text-sm text-text-light">React Fundamentals - 3 days</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 }

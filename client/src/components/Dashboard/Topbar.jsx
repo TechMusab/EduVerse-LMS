@@ -1,21 +1,29 @@
 import React from "react";
 import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { CiSearch } from "react-icons/ci";
 import { MdMessage } from "react-icons/md";
 import { IoIosNotifications } from "react-icons/io";
 import { MdKeyboardArrowDown } from "react-icons/md";
+import { IoClose } from "react-icons/io5";
+import { FaLinkedin, FaUserGraduate, FaLightbulb } from "react-icons/fa";
 import review from "../../assets/review (1).jpg";
 import hamburger from "../../assets/hamburger.svg";
-import Toast from "../Toast";
+import { useToast } from "../shared/ToastContext";
+import { updateUserRole, fetchProfile } from "../../redux/Slices/authSlice";
+
 export default function Topbar() {
+  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+  const { showSuccess, showError } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
-  const [toast, setToast] = useState(null);
   const [formData, setFormData] = useState({
     bio: "",
     expertise: "",
     linkedin: "",
   });
+  
   const handleinstructorform = () => {
     setShowModal(true);
   };
@@ -37,20 +45,33 @@ export default function Topbar() {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
-            Authorization: token,
+            Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify(formData),
         }
       );
-        const data = await response.json();
-        //toast
-        setToast({ message: data.message, type: "success" });
-        setTimeout(() => {
-          setToast(null);
-          closeModal();
-        }, 3000);
+      
+      const data = await response.json();
+      
+      if (response.ok) {
+        // Refetch user profile to get the latest data from database
+        await dispatch(fetchProfile());
+        
+        showSuccess("Congratulations! You are now an instructor!");
+        closeModal();
+        
+        // Clear form data
+        setFormData({
+          bio: "",
+          expertise: "",
+          linkedin: "",
+        });
+      } else {
+        showError(data.message || "Failed to become instructor");
+      }
     } catch (error) {
       console.error("Network error:", error);
+      showError("Network error. Please try again.");
     }
   };
   return (
@@ -77,23 +98,27 @@ export default function Topbar() {
           />
         </div>
 
-        <button
-          onClick={handleinstructorform}
-          className="hidden  lg:block bg-primary-500 px-4 py-2 rounded-lg text-primary-text cursor-pointer hover:bg-primary-600"
-        >
-          Become Instructor
-        </button>
+        {/* Only show "Become Instructor" button for students */}
+        {user?.role === "student" && (
+          <button
+            onClick={handleinstructorform}
+            className="hidden lg:block gradient-primary px-4 py-2 rounded-lg text-primary-text cursor-pointer hover:shadow-glow-hover transition-all duration-300 animate-fade-in"
+          >
+            Become Instructor
+          </button>
+        )}
+
         <div className="hidden lg:flex justify-center items-center gap-6">
-          <MdMessage className="cursor-pointer" size={24} />
-          <IoIosNotifications className="cursor-pointer" size={24} />
+          <MdMessage className="cursor-pointer hover:text-primary-500 transition-colors" size={24} />
+          <IoIosNotifications className="cursor-pointer hover:text-primary-500 transition-colors" size={24} />
           <div className="flex justify-center items-center gap-4">
             <img
-              className="w-8 h-8 rounded-full object-cover cursor-pointer"
-              src={review}
+              className="w-8 h-8 rounded-full object-cover cursor-pointer shadow-glow"
+              src={user?.instructorProfile?.profilePicture || review}
               alt="profile pic"
             />
-            <p className="text-text text-semibold">John Doe</p>
-            <MdKeyboardArrowDown className="cursor-pointer" size={24} />
+            <p className="text-text text-semibold">{user?.username || "User"}</p>
+            <MdKeyboardArrowDown className="cursor-pointer hover:text-primary-500 transition-colors" size={24} />
           </div>
         </div>
         <button onClick={() => setIsOpen(true)} className="lg:hidden">
@@ -107,95 +132,179 @@ export default function Topbar() {
           </button>
 
           {/* Nav Links */}
-          <a className="text-text text-lg hover:text-primary-500" href="#">
+          <a className="text-text text-lg hover:text-primary-500 transition-colors" href="#">
             Home
           </a>
-          <a className="text-text text-lg hover:text-primary-500" href="#">
+          <a className="text-text text-lg hover:text-primary-500 transition-colors" href="#">
             Courses
           </a>
-          <a className="text-text text-lg hover:text-primary-500" href="#">
+          <a className="text-text text-lg hover:text-primary-500 transition-colors" href="#">
             About
           </a>
-          <a className="text-text text-lg hover:text-primary-500" href="#">
+          <a className="text-text text-lg hover:text-primary-500 transition-colors" href="#">
             Notfications
           </a>
-          <a className="text-text text-lg hover:text-primary-500" href="#">
+          <a className="text-text text-lg hover:text-primary-500 transition-colors" href="#">
             Messages
           </a>
 
           <div className="flex flex-col gap-4 mt-6 w-full">
-            <a className="text-secondary-text text-center px-6 py-3 rounded-lg bg-primary-500 cursor-pointer hover:bg-primary-600">
+            <a className="text-secondary-text text-center px-6 py-3 rounded-lg gradient-primary cursor-pointer hover:shadow-glow-hover transition-all duration-300">
               Profile
             </a>
-            <button
-              onClick={handleinstructorform}
-              className=" bg-primary-500 px-4 py-2 rounded-lg text-primary-text cursor-pointer hover:bg-primary-600"
-            >
-              Become Instructor
-            </button>
-            <a className="text-secondary-text text-center px-6 py-3 rounded-lg bg-secondary-500 cursor-pointer hover:bg-secondary-hover">
+            {/* Only show "Become Instructor" button for students in mobile menu */}
+            {user?.role === "student" && (
+              <button
+                onClick={handleinstructorform}
+                className="gradient-primary px-4 py-2 rounded-lg text-primary-text cursor-pointer hover:shadow-glow-hover transition-all duration-300"
+              >
+                Become Instructor
+              </button>
+            )}
+            <a className="text-secondary-text text-center px-6 py-3 rounded-lg gradient-secondary cursor-pointer hover:shadow-glow-hover transition-all duration-300">
               Logout
             </a>
           </div>
         </div>
       )}
 
+      {/* Beautiful Aesthetic Modal */}
       {showModal && (
-        <div className="fixed inset-0 flex items-center justify-center z-50">
+        <div className="fixed inset-0 flex items-center justify-center z-50 p-4">
+          {/* Backdrop with blur effect */}
           <div
-            className="absolute inset-0 bg-black bg-opacity-50 backdrop-blur-sm"
+            className="absolute inset-0 bg-black/40 backdrop-blur-md"
             onClick={closeModal}
           ></div>
 
-          <div className="bg-white p-6 rounded-lg shadow-lg z-50 w-full max-w-md relative">
-            <h2 className="text-xl font-bold mb-4">Become an Instructor</h2>
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="bio"
-                placeholder="Your Bio"
-                value={formData.bio}
-                onChange={handleChange}
-                className="block w-full mb-2 border p-2 rounded"
-                required
-              />
-              <input
-                type="text"
-                name="expertise"
-                placeholder="Your Expertise"
-                value={formData.expertise}
-                onChange={handleChange}
-                className="block w-full mb-2 border p-2 rounded"
-                required
-              />
-              <input
-                type="url"
-                name="linkedin"
-                placeholder="LinkedIn Profile (optional)"
-                value={formData.linkedin}
-                onChange={handleChange}
-                className="block w-full mb-4 border p-2 rounded"
-              />
-              {toast && <Toast message={toast.message} type={toast.type} onClose={() => setToast(null)} />}
-              <div className="flex justify-end gap-2">
-                <button
-                  type="button"
-                  onClick={closeModal}
-                  className="bg-gray-300 px-4 py-2 rounded"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="bg-green-600 text-white px-4 py-2 rounded"
-                >
-                  Submit
-                </button>
+          {/* Modal Container */}
+          <div className="relative w-full max-w-lg animate-slide-up">
+            {/* Glass morphism card */}
+            <div className="bg-white/90 backdrop-blur-xl rounded-2xl shadow-2xl border border-white/20 overflow-hidden">
+              {/* Header with gradient */}
+              <div className="gradient-primary p-6 text-white relative overflow-hidden">
+                <div className="absolute inset-0 bg-gradient-to-r from-white/10 to-transparent"></div>
+                <div className="relative z-10">
+                  <div className="flex justify-between items-start mb-3">
+                    <div>
+                      <h2 className="text-2xl font-bold mb-1">Become an Instructor</h2>
+                      <p className="text-white/90 text-sm">Share your knowledge and inspire learners</p>
+                    </div>
+                    <button
+                      onClick={closeModal}
+                      className="p-1.5 rounded-full bg-white/20 hover:bg-white/30 transition-all duration-300 group"
+                    >
+                      <IoClose size={20} className="group-hover:scale-110 transition-transform" />
+                    </button>
+                  </div>
+                  
+                  {/* Feature highlights */}
+                  <div className="flex gap-4 mt-4">
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded-full bg-white/20">
+                        <FaUserGraduate size={14} />
+                      </div>
+                      <span className="text-xs">Teach & Inspire</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <div className="p-1.5 rounded-full bg-white/20">
+                        <FaLightbulb size={14} />
+                      </div>
+                      <span className="text-xs">Share Expertise</span>
+                    </div>
+                  </div>
+                </div>
               </div>
-            </form>
+
+              {/* Form Content */}
+              <div className="p-6">
+                <form onSubmit={handleSubmit} className="space-y-4">
+                  {/* Bio Field */}
+                  <div className="space-y-1.5">
+                    <label className="block text-sm font-semibold text-text">
+                      Tell us about yourself
+                    </label>
+                    <div className="relative">
+                      <textarea
+                        name="bio"
+                        placeholder="Share your teaching experience and background..."
+                        value={formData.bio}
+                        onChange={handleChange}
+                        rows="3"
+                        className="w-full p-3 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-all duration-300 bg-gray-50 resize-none"
+                        required
+                      />
+                      <div className="absolute top-3 right-3 text-gray-400">
+                        <FaUserGraduate size={14} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Expertise Field */}
+                  <div className="space-y-1.5">
+                    <label className="block text-sm font-semibold text-text">
+                      Your areas of expertise
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="text"
+                        name="expertise"
+                        placeholder="e.g., Web Development, Data Science, Design..."
+                        value={formData.expertise}
+                        onChange={handleChange}
+                        className="w-full p-3 pl-10 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-all duration-300 bg-gray-50"
+                        required
+                      />
+                      <div className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400">
+                        <FaLightbulb size={14} />
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* LinkedIn Field */}
+                  <div className="space-y-1.5">
+                    <label className="block text-sm font-semibold text-text">
+                      LinkedIn Profile (Optional)
+                    </label>
+                    <div className="relative">
+                      <input
+                        type="url"
+                        name="linkedin"
+                        placeholder="https://linkedin.com/in/yourprofile"
+                        value={formData.linkedin}
+                        onChange={handleChange}
+                        className="w-full p-3 pl-10 border-2 border-gray-200 rounded-lg focus:outline-none focus:border-primary-500 transition-all duration-300 bg-gray-50"
+                      />
+                      <div className="absolute top-1/2 left-3 -translate-y-1/2 text-gray-400">
+                        <FaLinkedin size={14} />
+                      </div>
+                    </div>
+                    <p className="text-xs text-gray-500">Help students connect with you professionally</p>
+                  </div>
+
+                  {/* Action Buttons */}
+                  <div className="flex gap-3 pt-4">
+                    <button
+                      type="button"
+                      onClick={closeModal}
+                      className="flex-1 py-2.5 px-4 border-2 border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-all duration-300 font-semibold text-sm"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="flex-1 py-2.5 px-4 gradient-success text-white rounded-lg hover:shadow-glow-hover transition-all duration-300 font-semibold text-sm"
+                    >
+                      Submit Application
+                    </button>
+                  </div>
+                </form>
+              </div>
+            </div>
           </div>
         </div>
       )}
+
     </>
   );
 }
