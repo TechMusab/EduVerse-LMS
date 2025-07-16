@@ -6,16 +6,6 @@ import { MdOutlinePeople } from "react-icons/md";
 import { IoMdStats } from "react-icons/io";
 import Toast from "../shared/Toast";
 import CreateCourseModal from "./CreateCourseModal";
-import { 
-  AnimatedContainer, 
-  AnimatedCard, 
-  AnimatedButton,
-  FadeInUp,
-  SlideInLeft,
-  SlideInRight,
-  ScaleIn,
-  useScrollAnimation
-} from "../shared/AnimatedComponents";
 
 export default function InstructorDashboard() {
   const { user } = useSelector((state) => state.auth);
@@ -23,11 +13,6 @@ export default function InstructorDashboard() {
   const [loading, setLoading] = useState(true);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [toast, setToast] = useState(null);
-
-  // Scroll animations
-  const [welcomeRef, welcomeInView] = useScrollAnimation();
-  const [statsRef, statsInView] = useScrollAnimation();
-  const [coursesRef, coursesInView] = useScrollAnimation();
 
   useEffect(() => {
     fetchCourses();
@@ -76,10 +61,7 @@ export default function InstructorDashboard() {
             ? { ...course, isPublished: !currentStatus }
             : course
         ));
-        setToast({ 
-          message: `Course ${!currentStatus ? 'published' : 'unpublished'} successfully!`, 
-          type: "success" 
-        });
+        setToast({ message: `Course ${!currentStatus ? 'published' : 'unpublished'} successfully!`, type: "success" });
       }
     } catch (error) {
       setToast({ message: "Error updating course status", type: "error" });
@@ -128,14 +110,6 @@ export default function InstructorDashboard() {
 
   return (
     <>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
-
       <AnimatedContainer className="space-y-6">
         {/* Welcome Section */}
         <FadeInUp ref={welcomeRef} isVisible={welcomeInView}>
@@ -328,6 +302,7 @@ export default function InstructorDashboard() {
           onCourseCreated={handleCourseCreated}
         />
       )}
+      <Toast message={toast?.message} type={toast?.type} />
     </>
   );
 } 

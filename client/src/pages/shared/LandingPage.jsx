@@ -1,23 +1,22 @@
 import React from "react";
-import Header from "../../components/Header";
-import Hero from "../../components/Hero";
-import Features from "../../components/Features";
-import popularCourses from "../../components/popularCourses";
-import Reviews from "../../components/Reviews";
-import CTA from "../../components/CTA";
-import Footer from "../../components/Footer";
-import { AnimatedPage } from "../../components/shared/AnimatedComponents";
+import Header from "../../components/landing/Header";
+import Hero from "../../components/landing/Hero";
+import Features from "../../components/landing/Features";
+import PopularCourses from "../../components/landing/popularCourses";
+import Reviews from "../../components/landing/Reviews";
+import CTA from "../../components/landing/CTA";
+import Footer from "../../components/landing/Footer";
 
 export default function LandingPage() {
   return (
-    <AnimatedPage>
+    <div>
       <Header />
       <Hero />
       <Features />
-      <popularCourses />
+      <PopularCourses />
       <Reviews />
       <CTA />
       <Footer />
-    </AnimatedPage>
+    </div>
   );
 } 

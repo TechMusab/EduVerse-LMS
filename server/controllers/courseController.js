@@ -2,7 +2,6 @@ import Course from '../models/Course.js';
 
 // Create a new course
 export const createCourse = async (req, res) => {
-  console.log("Creating course");
   try {
     const { title, description, thumbnail, price, category, level, duration } = req.body;
     const instructorId = req.user.id;

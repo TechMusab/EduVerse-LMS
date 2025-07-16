@@ -69,9 +69,6 @@ export default function Profile() {
       setToast({ message: "Network error. Please try again.", type: "error" });
     }
     
-    setTimeout(() => {
-      setToast(null);
-    }, 3000);
   };
 
   if (status === "loading") {
@@ -84,13 +81,6 @@ export default function Profile() {
 
   return (
     <>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
       <Topbar />
       <main className="flex flex-col lg:flex-row min-h-screen bg-background">
         <Sidebar />
@@ -288,6 +278,7 @@ export default function Profile() {
           </div>
         </div>
       </main>
+      {toast && <Toast message={toast.message} type={toast.type} />}
     </>
   );
 } 

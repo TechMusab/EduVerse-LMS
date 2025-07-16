@@ -9,13 +9,14 @@ import { IoClose } from "react-icons/io5";
 import { FaLinkedin, FaUserGraduate, FaLightbulb } from "react-icons/fa";
 import review from "../../assets/review (1).jpg";
 import hamburger from "../../assets/hamburger.svg";
-import { useToast } from "../shared/ToastContext";
+// Remove: import { useToast } from "../shared/ToastContext";
 import { updateUserRole, fetchProfile } from "../../redux/Slices/authSlice";
+import Toast from "../shared/Toast";
 
 export default function Topbar() {
   const { user } = useSelector((state) => state.auth);
   const dispatch = useDispatch();
-  const { showSuccess, showError } = useToast();
+  // Remove: const { showSuccess, showError } = useToast();
   const [isOpen, setIsOpen] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [formData, setFormData] = useState({
@@ -23,6 +24,7 @@ export default function Topbar() {
     expertise: "",
     linkedin: "",
   });
+  const [toast, setToast] = useState(null);
   
   const handleinstructorform = () => {
     setShowModal(true);
@@ -57,7 +59,7 @@ export default function Topbar() {
         // Refetch user profile to get the latest data from database
         await dispatch(fetchProfile());
         
-        showSuccess("Congratulations! You are now an instructor!");
+        // showSuccess("Congratulations! You are now an instructor!"); // Removed toast
         closeModal();
         
         // Clear form data
@@ -67,11 +69,12 @@ export default function Topbar() {
           linkedin: "",
         });
       } else {
-        showError(data.message || "Failed to become instructor");
+        // showError(data.message || "Failed to become instructor"); // Removed toast
+        setToast({ message: data.message || "Failed to become instructor", type: "error" });
       }
     } catch (error) {
       console.error("Network error:", error);
-      showError("Network error. Please try again.");
+      setToast({ message: "Network error. Please try again.", type: "error" });
     }
   };
   return (
@@ -304,6 +307,8 @@ export default function Topbar() {
           </div>
         </div>
       )}
+
+      <Toast message={toast?.message} type={toast?.type} onClose={() => setToast(null)} />
 
     </>
   );

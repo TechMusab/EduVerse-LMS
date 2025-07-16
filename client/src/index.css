@@ -1,153 +1,19 @@
 @import "tailwindcss";
-@import "tw-animate-css";
 
-@custom-variant dark (&:is(.dark *));
-
-/* 🌈 Modern Aesthetic Theme */
-:root {
-  /* === Primary Color Palette === */
-  --color-primary-500: #667eea; /* Beautiful gradient blue */
-  --color-primary-600: #764ba2; /* Purple gradient */
-  --color-primary-700: #f093fb; /* Pink gradient */
-  --color-primary-hover: #764ba2;
-  --color-primary-text: #ffffff;
-
-  /* === Secondary Colors === */
-  --color-secondary-500: #4facfe; /* Sky blue */
-  --color-secondary-600: #00f2fe; /* Cyan */
-  --color-secondary-hover: #00f2fe;
-  --color-secondary-text: #ffffff;
-
-  /* === Accent Colors === */
-  --color-accent-500: #fa709a; /* Pink accent */
-  --color-accent-600: #fee140; /* Yellow accent */
-  --color-accent-700: #ff9a9e; /* Light pink */
-
-  /* === Background Colors === */
-  --color-background: #f8fafc; /* Soft light background */
-  --color-surface: #ffffff;    /* White cards, panels */
-  --color-surface-hover: #f1f5f9; /* Light gray hover */
-
-  /* === Text Colors === */
-  --color-text: #1e293b;       /* Rich dark text */
-  --color-muted: #6b7280;      /* Gray muted text for better readability */
-  --color-text-light: #64748b; /* Lighter text */
-
-  /* === Status Colors === */
-  --color-success: #10b981;    /* Emerald green */
-  --color-warning: #f59e0b;    /* Amber */
-  --color-error: #ef4444;      /* Red */
-  --color-info: #3b82f6;       /* Blue */
-
-  /* === Font Families === */
-  --font-sans: "Inter", "ui-sans-serif", "system-ui", "sans-serif";
-  --font-serif: "Merriweather", "Georgia", "serif";
-  --font-mono: "Fira Code", "ui-monospace", "monospace";
-  --font-display: "Poppins", "Inter", sans-serif;
-
-  /* === Button Colors === */
-  --color-button-outline: #667eea;
-  --color-button-outline-hover: #e0e7ff;
-  --color-button-outline-text: #667eea;
-
-  --color-button-danger: #ef4444;
-  --color-button-danger-hover: #dc2626;
-  --color-button-danger-text: #ffffff;
-
-  /* === Gradient Classes === */
-  --gradient-primary: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-  --gradient-secondary: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
-  --gradient-accent: linear-gradient(135deg, #fa709a 0%, #fee140 100%);
-  --gradient-success: linear-gradient(135deg, #10b981 0%, #059669 100%);
-  --gradient-warning: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  --gradient-error: linear-gradient(135deg, #ef4444 0%, #dc2626 100%);
-
-  /* === Animation === */
-  --animate-marquee: marquee 25s linear infinite;
-  --animate-fade-in: fadeIn 0.5s ease-in-out;
-  --animate-slide-up: slideUp 0.3s ease-out;
-  --animate-bounce: bounce 0.6s ease-in-out;
-
-  /* === Radius === */
-  --radius: 0.75rem;
-  --radius-sm: calc(var(--radius) - 4px);
-  --radius-md: calc(var(--radius) - 2px);
-  --radius-lg: var(--radius);
-  --radius-xl: calc(var(--radius) + 4px);
-}
-
-/* === Animations === */
-@keyframes marquee {
-  0% { transform: translateX(100%); }
-  100% { transform: translateX(-100%); }
-}
-
-@keyframes fadeIn {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-
-@keyframes slideUp {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes bounce {
-  0%, 20%, 53%, 80%, 100% { transform: translate3d(0,0,0); }
-  40%, 43% { transform: translate3d(0,-30px,0); }
-  70% { transform: translate3d(0,-15px,0); }
-  90% { transform: translate3d(0,-4px,0); }
-}
-
-/* === Custom Utility Classes === */
-@layer utilities {
-  .gradient-primary {
-    background: var(--gradient-primary);
-  }
-  
-  .gradient-secondary {
-    background: var(--gradient-secondary);
-  }
-  
-  .gradient-accent {
-    background: var(--gradient-accent);
-  }
-  
-  .gradient-success {
-    background: var(--gradient-success);
-  }
-  
-  .gradient-warning {
-    background: var(--gradient-warning);
-  }
-  
-  .gradient-error {
-    background: var(--gradient-error);
-  }
-  
-  .animate-fade-in {
-    animation: var(--animate-fade-in);
-  }
-  
-  .animate-slide-up {
-    animation: var(--animate-slide-up);
-  }
-  
-  .animate-bounce {
-    animation: var(--animate-bounce);
-  }
-  
-  .glass-effect {
-    background: rgba(255, 255, 255, 0.1);
-    backdrop-filter: blur(10px);
-    border: 1px solid rgba(255, 255, 255, 0.2);
-  }
-  
-  .shadow-glow {
-    box-shadow: 0 0 20px rgba(102, 126, 234, 0.3);
-  }
-  
-  .shadow-glow-hover:hover {
-    box-shadow: 0 0 30px rgba(102, 126, 234, 0.5);
-  }
+@theme {
+  --color-primary: #2563eb; /* blue-600 */
+  --color-primary-light: #3b82f6; /* blue-500 */
+  --color-primary-dark: #1e40af; /* blue-800 */
+  --color-secondary: #10b981; /* emerald-500 */
+  --color-secondary-light: #6ee7b7; /* emerald-300 */
+  --color-secondary-dark: #047857; /* emerald-700 */
+  --color-accent: #f59e42; /* orange-400 */
+  --color-background: #f8fafc; /* slate-50 */
+  --color-surface: #ffffff; /* white */
+  --color-border: #e5e7eb; /* gray-200 */
+  --color-text: #1e293b; /* slate-800 */
+  --color-muted: #64748b; /* slate-500 */
+  --color-error: #ef4444; /* red-500 */
+  --color-success: #22c55e; /* green-500 */
+  --color-warning: #facc15; /* yellow-400 */
 }

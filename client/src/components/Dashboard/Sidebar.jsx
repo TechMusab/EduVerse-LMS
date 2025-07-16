@@ -2,7 +2,6 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useSelector, useDispatch } from "react-redux";
 import { AiFillDashboard } from "react-icons/ai";
-import { IoBookSharp } from "react-icons/io5";
 import { MdOutlineHelp } from "react-icons/md";
 import { IoMdSettings } from "react-icons/io";
 import { IoLogOut } from "react-icons/io5";

@@ -28,20 +28,10 @@ export default function Signup() {
     } else {
       setToast({ message: result.message, type: "error" });
     }
-    setTimeout(() => {
-      setToast(null);
-    }, 3000);
   };
   
   return (
     <>
-      {toast && (
-        <Toast
-          message={toast.message}
-          type={toast.type}
-          onClose={() => setToast(null)}
-        />
-      )}
       <section className="w-screen h-screen bg-background flex gap-6">
         <div className="md:h-full md:w-1/2 relative overflow-hidden">
           <video
@@ -145,6 +135,7 @@ export default function Signup() {
           </div>
         </div>
       </section>
+      {toast && <Toast message={toast.message} type={toast.type} />}
     </>
   );
 } 
