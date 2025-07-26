@@ -12,6 +12,10 @@ import { GithubIcon } from "lucide-react";
 import React from "react";
 
 export default function Page() {
+  async function signinwithGithub() {
+    
+    
+  }
   return (
     <>
       <Card>
